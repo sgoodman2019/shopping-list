@@ -17,21 +17,43 @@ const addItem = (e) => {
     return;
   }
 
-  // Create list item
-  const li = `<li>
-    ${newItem}
-    <button class="remove-item btn-link text-red">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-    </li>`;
-
-  // add to list of items
-  itemList.innerHTML += li;
+  addItemToDOM(newItem);
+  addItemtoStorage(newItem);
 
   items = document.querySelectorAll("li");
   itemInput.value = "";
 
   checkUI();
+};
+
+const addItemToDOM = (item) => {
+  // Create list item
+  const li = `<li>
+  ${item}
+  <button class="remove-item btn-link text-red">
+      <i class="fa-solid fa-xmark"></i>
+  </button>
+  </li>`;
+
+  // add to list of items
+  itemList.innerHTML += li;
+};
+
+// function to add items to local storage
+const addItemtoStorage = (item) => {
+  let itemsFromStorage;
+
+  if (localStorage.getItem("items") === null) {
+    itemsFromStorage = [];
+  } else {
+    itemsFromStorage = JSON.parse(localStorage.getItem("items"));
+  }
+
+  // Add new item to array
+  itemsFromStorage.push(item);
+
+  // Convert to json string and set to local storage
+  localStorage.setItem("items", JSON.stringify(itemsFromStorage));
 };
 
 // Function to remove an item from the list
